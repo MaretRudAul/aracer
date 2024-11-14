@@ -7,9 +7,9 @@
  *
  * Code generation for model "aracer".
  *
- * Model version              : 1.4
+ * Model version              : 1.6
  * Simulink Coder version : 24.2 (R2024b) 21-Jun-2024
- * C++ source code generated on : Thu Oct 31 07:59:37 2024
+ * C++ source code generated on : Thu Nov  7 10:36:48 2024
  *
  * Target selection: ert.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping

@@ -7,9 +7,9 @@
  *
  * Code generation for model "aracer".
  *
- * Model version              : 1.4
+ * Model version              : 1.6
  * Simulink Coder version : 24.2 (R2024b) 21-Jun-2024
- * C++ source code generated on : Thu Oct 31 07:59:37 2024
+ * C++ source code generated on : Thu Nov  7 10:36:48 2024
  *
  * Target selection: ert.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -71,6 +71,7 @@ void aracer_step(void)
   SL_Bus_aracer_std_msgs_Float64 tmp;
   real_T rtb_TSamp;
   real_T rtb_TSamp_e;
+  real_T u0;
   boolean_T b_varargout_1;
 
   /* Outputs for Atomic SubSystem: '<Root>/Subscribe1' */
@@ -100,26 +101,39 @@ void aracer_step(void)
    * About '<S2>/TSamp':
    *  y = u * K where K = 1 / ( w * Ts )
    *   */
-  rtb_TSamp = aracer_B.EnabledSubsystem_f.In1.Data * 100.0;
+  rtb_TSamp = aracer_B.EnabledSubsystem_f.In1.Data * 5.0;
 
   /* SampleTimeMath: '<S3>/TSamp'
    *
    * About '<S3>/TSamp':
    *  y = u * K where K = 1 / ( w * Ts )
    *   */
-  rtb_TSamp_e = aracer_B.EnabledSubsystem.In1.Data * 100.0;
+  rtb_TSamp_e = aracer_B.EnabledSubsystem.In1.Data * 5.0;
 
-  /* BusAssignment: '<Root>/Bus Assignment' incorporates:
+  /* MATLAB Function: '<Root>/MATLAB Function' incorporates:
    *  Constant: '<Root>/tau'
-   *  MATLAB Function: '<Root>/MATLAB Function'
    *  Sum: '<S2>/Diff'
    *  Sum: '<S3>/Diff'
    *  UnitDelay: '<S2>/UD'
    *  UnitDelay: '<S3>/UD'
    */
-  rtb_BusAssignment.Data = ((rtb_TSamp - aracer_DW.UD_DSTATE) - (rtb_TSamp_e -
-    aracer_DW.UD_DSTATE_h) * 3.0) + (aracer_B.EnabledSubsystem_f.In1.Data - 3.0 *
-    aracer_B.EnabledSubsystem.In1.Data);
+  u0 = ((rtb_TSamp - aracer_DW.UD_DSTATE) - (rtb_TSamp_e - aracer_DW.UD_DSTATE_h)
+        * 3.0) + (aracer_B.EnabledSubsystem_f.In1.Data - 3.0 *
+                  aracer_B.EnabledSubsystem.In1.Data);
+
+  /* Saturate: '<Root>/Saturation' */
+  if (u0 > 1.5) {
+    /* BusAssignment: '<Root>/Bus Assignment' */
+    rtb_BusAssignment.Data = 1.5;
+  } else if (u0 < -3.0) {
+    /* BusAssignment: '<Root>/Bus Assignment' */
+    rtb_BusAssignment.Data = -3.0;
+  } else {
+    /* BusAssignment: '<Root>/Bus Assignment' */
+    rtb_BusAssignment.Data = u0;
+  }
+
+  /* End of Saturate: '<Root>/Saturation' */
 
   /* Outputs for Atomic SubSystem: '<Root>/Publish' */
   /* MATLABSystem: '<S5>/SinkBlock' */

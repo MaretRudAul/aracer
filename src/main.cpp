@@ -3,9 +3,9 @@
 //
 // Code generated for Simulink model 'aracer'.
 //
-// Model version                  : 1.4
+// Model version                  : 1.6
 // Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Thu Oct 31 07:59:49 2024
+// C/C++ source code generated on : Thu Nov 14 10:05:57 2024
 //
 
 #include <stdio.h>

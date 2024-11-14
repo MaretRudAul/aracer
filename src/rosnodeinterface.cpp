@@ -3,9 +3,9 @@
 //
 // Code generated for Simulink model 'aracer'.
 //
-// Model version                  : 1.4
+// Model version                  : 1.6
 // Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Thu Oct 31 07:59:49 2024
+// C/C++ source code generated on : Thu Nov 14 10:05:57 2024
 //
 
 #ifdef _MSC_VER
@@ -83,7 +83,7 @@ namespace ros
 
         // create scheduler timer to run the scheduler callback
         mSchedulerTimer = std::make_shared<ros::WallTimer>
-          (mNode->createWallTimer(ros::WallDuration(10000000*1e-9),
+          (mNode->createWallTimer(ros::WallDuration(200000000*1e-9),
             boost::bind(&NodeInterface::schedulerCallback, this, _1)));
         mSchedulerTimer->start();
       } catch (std::exception& ex) {
