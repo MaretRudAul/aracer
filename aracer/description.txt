@@ -1,0 +1,1 @@
+utilize the derivative of the time gap to decrease oscillation in vehicle velocity and stabilize faster.
