@@ -7,9 +7,9 @@
  *
  * Code generation for model "aracer".
  *
- * Model version              : 1.6
+ * Model version              : 1.12
  * Simulink Coder version : 24.2 (R2024b) 21-Jun-2024
- * C++ source code generated on : Thu Nov  7 10:36:48 2024
+ * C++ source code generated on : Thu Nov 21 14:38:15 2024
  *
  * Target selection: ert.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -44,6 +44,7 @@ struct B_EnabledSubsystem_aracer_T {
 
 /* Block signals (default storage) */
 struct B_aracer_T {
+  real_T DiscreteFilter;               /* '<Root>/Discrete Filter' */
   B_EnabledSubsystem_aracer_T EnabledSubsystem_f;/* '<S7>/Enabled Subsystem' */
   B_EnabledSubsystem_aracer_T EnabledSubsystem;/* '<S6>/Enabled Subsystem' */
 };
@@ -55,6 +56,11 @@ struct DW_aracer_T {
   ros_slroscpp_internal_block_S_T obj_n;/* '<S6>/SourceBlock' */
   real_T UD_DSTATE;                    /* '<S2>/UD' */
   real_T UD_DSTATE_h;                  /* '<S3>/UD' */
+  real_T DiscreteFilter_states;        /* '<Root>/Discrete Filter' */
+  real_T DiscreteFIRFilter_states[9];  /* '<Root>/Discrete FIR Filter' */
+  real_T DiscreteFIRFilter_simContextBuf[18];/* '<Root>/Discrete FIR Filter' */
+  real_T DiscreteFIRFilter_simRevCoeff[10];/* '<Root>/Discrete FIR Filter' */
+  int32_T DiscreteFIRFilter_circBuf;   /* '<Root>/Discrete FIR Filter' */
   boolean_T objisempty;                /* '<S7>/SourceBlock' */
   boolean_T objisempty_l;              /* '<S6>/SourceBlock' */
   boolean_T objisempty_a;              /* '<S5>/SinkBlock' */

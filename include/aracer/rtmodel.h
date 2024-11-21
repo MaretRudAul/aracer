@@ -4,7 +4,7 @@
  * Code generation for Simulink model "aracer".
  *
  * Simulink Coder version                : 24.2 (R2024b) 21-Jun-2024
- * C++ source code generated on : Thu Nov  7 10:36:48 2024
+ * C++ source code generated on : Thu Nov 21 14:38:15 2024
  *
  * Note that the generated code is not dependent on this header file.
  * The file is used in cojuction with the automatic build procedure.
