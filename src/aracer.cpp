@@ -7,9 +7,9 @@
  *
  * Code generation for model "aracer".
  *
- * Model version              : 1.6
+ * Model version              : 1.12
  * Simulink Coder version : 24.2 (R2024b) 21-Jun-2024
- * C++ source code generated on : Thu Nov  7 10:36:48 2024
+ * C++ source code generated on : Thu Nov 21 14:38:15 2024
  *
  * Target selection: ert.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -72,6 +72,7 @@ void aracer_step(void)
   real_T rtb_TSamp;
   real_T rtb_TSamp_e;
   real_T u0;
+  int32_T j;
   boolean_T b_varargout_1;
 
   /* Outputs for Atomic SubSystem: '<Root>/Subscribe1' */
@@ -123,17 +124,30 @@ void aracer_step(void)
 
   /* Saturate: '<Root>/Saturation' */
   if (u0 > 1.5) {
-    /* BusAssignment: '<Root>/Bus Assignment' */
-    rtb_BusAssignment.Data = 1.5;
+    u0 = 1.5;
   } else if (u0 < -3.0) {
-    /* BusAssignment: '<Root>/Bus Assignment' */
-    rtb_BusAssignment.Data = -3.0;
-  } else {
-    /* BusAssignment: '<Root>/Bus Assignment' */
-    rtb_BusAssignment.Data = u0;
+    u0 = -3.0;
   }
 
-  /* End of Saturate: '<Root>/Saturation' */
+  /* DiscreteFilter: '<Root>/Discrete Filter' incorporates:
+   *  Saturate: '<Root>/Saturation'
+   */
+  aracer_B.DiscreteFilter = u0 - 0.5 * aracer_DW.DiscreteFilter_states;
+
+  /* DiscreteFir: '<Root>/Discrete FIR Filter' */
+  u0 = aracer_B.DiscreteFilter * 0.1;
+  for (j = aracer_DW.DiscreteFIRFilter_circBuf; j < 9; j++) {
+    u0 += aracer_DW.DiscreteFIRFilter_states[j] * 0.1;
+  }
+
+  for (j = 0; j < aracer_DW.DiscreteFIRFilter_circBuf; j++) {
+    u0 += aracer_DW.DiscreteFIRFilter_states[j] * 0.1;
+  }
+
+  /* BusAssignment: '<Root>/Bus Assignment' incorporates:
+   *  DiscreteFir: '<Root>/Discrete FIR Filter'
+   */
+  rtb_BusAssignment.Data = u0;
 
   /* Outputs for Atomic SubSystem: '<Root>/Publish' */
   /* MATLABSystem: '<S5>/SinkBlock' */
@@ -146,6 +160,22 @@ void aracer_step(void)
 
   /* Update for UnitDelay: '<S3>/UD' */
   aracer_DW.UD_DSTATE_h = rtb_TSamp_e;
+
+  /* Update for DiscreteFilter: '<Root>/Discrete Filter' */
+  aracer_DW.DiscreteFilter_states = aracer_B.DiscreteFilter;
+
+  /* Update for DiscreteFir: '<Root>/Discrete FIR Filter' */
+  /* Update circular buffer index */
+  aracer_DW.DiscreteFIRFilter_circBuf--;
+  if (aracer_DW.DiscreteFIRFilter_circBuf < 0) {
+    aracer_DW.DiscreteFIRFilter_circBuf = 8;
+  }
+
+  /* Update circular buffer */
+  aracer_DW.DiscreteFIRFilter_states[aracer_DW.DiscreteFIRFilter_circBuf] =
+    aracer_B.DiscreteFilter;
+
+  /* End of Update for DiscreteFir: '<Root>/Discrete FIR Filter' */
 }
 
 /* Model initialize function */
@@ -219,6 +249,13 @@ void aracer_initialize(void)
 
   /* InitializeConditions for UnitDelay: '<S3>/UD' */
   aracer_DW.UD_DSTATE_h = 0.0;
+
+  /* InitializeConditions for DiscreteFilter: '<Root>/Discrete Filter' */
+  aracer_DW.DiscreteFilter_states = 0.0;
+
+  /* InitializeConditions for DiscreteFir: '<Root>/Discrete FIR Filter' */
+  aracer_DW.DiscreteFIRFilter_circBuf = 0;
+  memset(&aracer_DW.DiscreteFIRFilter_states[0], 0, 9U * sizeof(real_T));
 
   /* SystemInitialize for Atomic SubSystem: '<Root>/Subscribe1' */
   /* SystemInitialize for Enabled SubSystem: '<S7>/Enabled Subsystem' */
